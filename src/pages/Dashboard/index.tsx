@@ -20,6 +20,7 @@ import {
   Section,
 
 } from './styles';
+import { Link } from 'react-router-dom';
 
 interface MonthAvailabilityItem {
   day: number;
@@ -143,7 +144,9 @@ const Dashboard: React.FC = () => {
             />
             <div>
               <span> Bem Vindo</span>
-              <strong>{user.name}</strong>
+              <Link to="/profile">
+                <strong>{user.name}</strong>
+              </Link>
             </div>
           </Profile>
           <button type="button" onClick={signOut}>
