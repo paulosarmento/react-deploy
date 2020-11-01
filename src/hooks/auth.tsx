@@ -20,6 +20,7 @@ interface AuthContextData {
   user: User;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
+  updateUser(user: User): void;
 }
 
 export const AuthContext = createContext<AuthContextData>(
@@ -62,8 +63,21 @@ export const AuthProvider: React.FC = ({ children }) => {
     localStorage.removeItem('@GoBarber:user');
     setData({} as AuthState);
   }, []);
+
+  const updateUser = useCallback(
+    (user: User) => {
+
+      localStorage.setItem('@GoBarber:user', JSON.stringify(user));
+
+      setData({
+        token: data.token,
+        user,
+      });
+
+  },[setData, data.token]);
+
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
+    <AuthContext.Provider value={{ user: data.user, signIn, signOut, updateUser }}>
       {children}
     </AuthContext.Provider>
   );
@@ -73,7 +87,7 @@ export function useAuth(): AuthContextData {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error('useAuth must be used widthin an AuthProvider');
+    throw new Error('useAuth must be used width in an AuthProvider');
   }
   return context;
 }
