@@ -37,8 +37,6 @@ export const AuthProvider: React.FC = ({ children }) => {
       return { token, user: JSON.parse(user) };
     }
 
-
-
     return {} as AuthState;
   });
 
@@ -66,18 +64,20 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const updateUser = useCallback(
     (user: User) => {
-
       localStorage.setItem('@GoBarber:user', JSON.stringify(user));
 
       setData({
         token: data.token,
         user,
       });
-
-  },[setData, data.token]);
+    },
+    [setData, data.token],
+  );
 
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut, updateUser }}>
+    <AuthContext.Provider
+      value={{ user: data.user, signIn, signOut, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );
